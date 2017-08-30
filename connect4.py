@@ -1,9 +1,11 @@
+from numpy import rot90
+
 class Connect4:
 
 	def setup(self):
-		self.board = [[0 for j in range(7)] for i in range(8)]
+		self.board = [[0 for j in range(6)] for i in range(7)]
 		self.game_running = True
-		self.current_player = 1
+		self.current_player = 2
 		self.win_combinations = [
 			[(0, 0), (1, 0), (2, 0), (3, 0)],
 			[(0, 0), (0, 1), (0, 2), (0, 3)],
@@ -25,9 +27,9 @@ class Connect4:
 			self.current_player = 1
 
 	def get_player_input(self):
-		column_number = int(raw_input('Player ' + str(self.current_player) + '\'s turn. Which row?'))
+		column_number = int(raw_input('Player ' + str(self.current_player) + '\'s turn. Which column? ')) - 1
 		column = self.board[column_number]
-		for (cell_value, row_number) in enumerate(column):
+		for (row_number, cell_value) in enumerate(column):
 			if cell_value == 0:
 				column[row_number] = self.current_player
 				break
@@ -37,6 +39,8 @@ class Connect4:
 			break
 
 	def display_board(self):
-		print self.board
+		rotated_board = rot90(self.board)
+		for row in rotated_board:
+			print row
 
 Connect4().setup().run()
