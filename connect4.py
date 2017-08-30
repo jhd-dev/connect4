@@ -25,7 +25,7 @@ class Connect4:
 			self.current_player = 1
 
 	def get_player_input(self):
-		column_number = raw_input('Player ' + str(self.current_player) + '\'s turn. Which row?')
+		column_number = int(raw_input('Player ' + str(self.current_player) + '\'s turn. Which row?'))
 		column = self.board[column_number]
 		for (cell_value, row_number) in enumerate(column):
 			if cell_value == 0:
