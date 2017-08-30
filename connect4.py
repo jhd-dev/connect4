@@ -2,6 +2,8 @@ from numpy import rot90
 
 class Connect4:
 
+	game_running = False
+
 	def setup(self):
 		self.board = [[0 for j in range(6)] for i in range(7)]
 		self.game_running = True
@@ -9,7 +11,8 @@ class Connect4:
 		self.win_combinations = [
 			[(0, 0), (1, 0), (2, 0), (3, 0)],
 			[(0, 0), (0, 1), (0, 2), (0, 3)],
-			[(0, 0), (1, 1), (2, 2), (3, 3)]
+			[(0, 0), (1, 1), (2, 2), (3, 3)],
+			[(0, 0), (-1, 1), (-2, 2) (-3, 3)]
 		]
 		return self
 
@@ -35,8 +38,17 @@ class Connect4:
 				break
 
 	def check_for_victory(self):
-		for column in self.board:
-			break
+		for (x, column) in enumerate(self.board):
+			for (y, cell_value) in enumerate(column):
+				self.check_winning_space()
+
+	def check_winning_space():
+		for combination in self.win_combinations:
+			for coordinates in combination:
+				if not (self.board[x + coordinates[0]] and self.board[x + coordinates[0]][y + coordinates[1]]):
+					break
+				if not (self.board[x + coordinates[0]][y + coordinates[1]] == cell_value):
+					break
 
 	def display_board(self):
 		rotated_board = rot90(self.board)
