@@ -12,7 +12,7 @@ class Connect4:
 			[(0, 0), (1, 0), (2, 0), (3, 0)],
 			[(0, 0), (0, 1), (0, 2), (0, 3)],
 			[(0, 0), (1, 1), (2, 2), (3, 3)],
-			[(0, 0), (-1, 1), (-2, 2) (-3, 3)]
+			[(0, 0), (-1, 1), (-2, 2), (-3, 3)]
 		]
 		return self
 
@@ -40,19 +40,27 @@ class Connect4:
 	def check_for_victory(self):
 		for (x, column) in enumerate(self.board):
 			for (y, cell_value) in enumerate(column):
-				self.check_winning_space()
+				for combination in self.win_combinations:
+					self.check_winning_combination(x, y, combination)
 
-	def check_winning_space():
-		for combination in self.win_combinations:
-			for coordinates in combination:
-				if not (self.board[x + coordinates[0]] and self.board[x + coordinates[0]][y + coordinates[1]]):
-					break
-				if not (self.board[x + coordinates[0]][y + coordinates[1]] == cell_value):
-					break
+	def check_winning_combination(self, x, y, combination):
+		for coordinates in combination:
+			if not (self.board[x + coordinates[0]] and self.board[x + coordinates[0]][y + coordinates[1]]):
+				return
+			if not (self.board[x + coordinates[0]][y + coordinates[1]] == self.board[x][y]):
+				return
+		self.end_game(self.current_player)
 
 	def display_board(self):
 		rotated_board = rot90(self.board)
 		for row in rotated_board:
 			print row
+
+	def end_game(self, winner=0):
+		if winner == 0:
+			print 'It\'ts a tie!'
+		else:
+			self.game_running = False
+			print 'Player ' + str(winner) + ' wins!'
 
 Connect4().setup().run()
