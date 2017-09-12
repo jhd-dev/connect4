@@ -1,19 +1,20 @@
+import Tkinter
 from numpy import rot90
 
 class Connect4:
 
 	game_running = False
+	win_combinations = [
+		[(0, 0), (1, 0), (2, 0), (3, 0)],
+		[(0, 0), (0, 1), (0, 2), (0, 3)],
+		[(0, 0), (1, 1), (2, 2), (3, 3)],
+		[(0, 0), (-1, 1), (-2, 2), (-3, 3)]
+	]
 
 	def setup(self):
 		self.board = [[0 for j in range(6)] for i in range(7)]
 		self.game_running = True
 		self.current_player = 2
-		self.win_combinations = [
-			[(0, 0), (1, 0), (2, 0), (3, 0)],
-			[(0, 0), (0, 1), (0, 2), (0, 3)],
-			[(0, 0), (1, 1), (2, 2), (3, 3)],
-			[(0, 0), (-1, 1), (-2, 2), (-3, 3)]
-		]
 		return self
 
 	def run(self):
@@ -41,15 +42,16 @@ class Connect4:
 		for (x, column) in enumerate(self.board):
 			for (y, cell_value) in enumerate(column):
 				for combination in self.win_combinations:
-					self.check_winning_combination(x, y, combination)
+					if self.check_winning_combination(x, y, combination):
+						self.end_game(self.current_player)
 
 	def check_winning_combination(self, x, y, combination):
 		for coordinates in combination:
 			if not (self.board[x + coordinates[0]] and self.board[x + coordinates[0]][y + coordinates[1]]):
-				return
+				return False
 			if not (self.board[x + coordinates[0]][y + coordinates[1]] == self.board[x][y]):
-				return
-		self.end_game(self.current_player)
+				return False
+		return True
 
 	def display_board(self):
 		rotated_board = rot90(self.board)
@@ -63,4 +65,15 @@ class Connect4:
 			self.game_running = False
 			print 'Player ' + str(winner) + ' wins!'
 
-Connect4().setup().run()
+class TkinterConnect4 (Connect4):
+
+	def setup(self):
+		Connect4.setup(self)
+		self.root = Tkinter.Tk()
+		self.root.mainloop()
+		return self
+
+	def display_board(self):
+		pass
+
+TkinterConnect4().setup().run()
