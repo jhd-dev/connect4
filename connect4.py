@@ -101,7 +101,7 @@ class TkinterConnect4 (Connect4):
 			self.switch_player()
 
 	def display_board(self):
-		self.label.config(text=map(lambda row: str(row) + '\n', rot90(self.board)).replace(r'[{}]'))
+		self.label.config(text='\n'.join([' '.join([str(cell) for cell in row]) for row in rot90(self.board)]))
 
 	def end_game(self, winner):
 		self.game_running = False
